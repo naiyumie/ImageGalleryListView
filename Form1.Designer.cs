@@ -51,10 +51,9 @@ namespace ImageGalleryListView
             this.listViewFile.Location = new System.Drawing.Point(6, 7);
             this.listViewFile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listViewFile.Name = "listViewFile";
-            this.listViewFile.Size = new System.Drawing.Size(963, 660);
+            this.listViewFile.Size = new System.Drawing.Size(919, 622);
             this.listViewFile.TabIndex = 0;
             this.listViewFile.UseCompatibleStateImageBehavior = false;
-            //this.listViewFile.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewFile_KeyDown);
             this.listViewFile.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewFile_MouseDoubleClick);
             // 
             // tabControl1
@@ -68,7 +67,7 @@ namespace ImageGalleryListView
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(983, 704);
+            this.tabControl1.Size = new System.Drawing.Size(939, 666);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -77,7 +76,7 @@ namespace ImageGalleryListView
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(975, 674);
+            this.tabPage1.Size = new System.Drawing.Size(931, 636);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "아케이드";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -108,9 +107,9 @@ namespace ImageGalleryListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.ClientSize = new System.Drawing.Size(964, 691);
             this.Controls.Add(this.tabControl1);
-            this.Font = new System.Drawing.Font("궁서체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Font = new System.Drawing.Font("바탕체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";

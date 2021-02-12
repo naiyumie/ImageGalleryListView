@@ -20,19 +20,41 @@ namespace ImageGalleryListView
         System.Windows.Forms.ImageList myImageListLarge = new ImageList();
         int lstvf_add_count = 0;
         XmlNodeList xmlList;
-        String DriveName = @"E:";
-        String BasicPath = @"E:\\_Emul_\\";
+        String AppConfig = @"config";
+        String DriveName;
+        String EmulatorRoot;
         String SnapShotFolderName;
         String AssetsFolderName;
+        String ArcadeXml;
+        String ShortCutSheet;
+
+
 
         public Form1()
         {
            
             InitializeComponent();
 
+            // ini
+            Console.WriteLine(Cfg.ReadConfig(AppConfig, "setup", "DriveName"));
+            Console.WriteLine(Cfg.ReadConfig(AppConfig, "setup", "EmulatorRoot"));
+            Console.WriteLine(Cfg.ReadConfig(AppConfig, "setup", "SnapShotFolderName"));
+            Console.WriteLine(Cfg.ReadConfig(AppConfig, "setup", "AssetsFolderName"));
+            Console.WriteLine(Cfg.ReadConfig(AppConfig, "setup", "ArcadeXml"));
+            Console.WriteLine(Cfg.ReadConfig(AppConfig, "setup", "ShortCutSheet"));
+
+
             /* variables 할당 */
-            SnapShotFolderName = BasicPath + @"__super_sonico_snap\\";
-            AssetsFolderName = BasicPath + @"__super_sonico_assets\\";
+            AppConfig = @"config";
+            DriveName = Cfg.ReadConfig(AppConfig, "setup", "DriveName");
+            EmulatorRoot = Cfg.ReadConfig(AppConfig, "setup", "EmulatorRoot");
+            SnapShotFolderName = Application.StartupPath + @"\\" + Cfg.ReadConfig(AppConfig, "setup", "SnapShotFolderName");
+            AssetsFolderName = Application.StartupPath + @"\\" + Cfg.ReadConfig(AppConfig, "setup", "AssetsFolderName");
+            ArcadeXml = Cfg.ReadConfig(AppConfig, "setup", "ArcadeXml");
+            ShortCutSheet = Cfg.ReadConfig(AppConfig, "setup", "ShortCutSheet");
+
+
+
 
             /* 이미지 리스트 세팅 */
             listViewFile.Items.Clear();
@@ -43,8 +65,8 @@ namespace ImageGalleryListView
             /* XML 로드 */
             string xmlprt = ""; 
             XmlDocument xml = new XmlDocument(); 
-            xml.Load(AssetsFolderName + @"arcade.xml");
-            xmlList = xml.SelectNodes("/games/game");
+            xml.Load(AssetsFolderName + ArcadeXml);
+            xmlList = xml.SelectNodes("/arcade/games/game");
 
             foreach (XmlNode xnl in xmlList) {
                 xmlprt += xnl["name"].InnerText;
@@ -53,6 +75,7 @@ namespace ImageGalleryListView
                 xmlprt += xnl["emul"].InnerText;
                 xmlprt += xnl["roms"].InnerText;
                 xmlprt += xnl["exec"].InnerText;
+                xmlprt += xnl["option"].InnerText;
 
                 String fullpathfile = SnapShotFolderName + @"\\" + xnl["snap"].InnerText;
                 FileInfo fileinfo = new FileInfo(fullpathfile);
@@ -74,25 +97,32 @@ namespace ImageGalleryListView
 
 
             /* 단축키 이미지 */ 
-            pictureBox1.Image = Bitmap.FromFile(AssetsFolderName + @"shortcut.png");
+            pictureBox1.Image = Bitmap.FromFile(AssetsFolderName + ShortCutSheet);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
-
-        private void listViewFile_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void GameRun(object sender)
         {
             /* 선택된 아이템의 경로를 얻는다 */
             ListView.SelectedListViewItemCollection items = listViewFile.SelectedItems;
             ListViewItem lvItem = items[0];
             //MessageBox.Show(lvItem.SubItems[0].Text);
-            String FullRunPath = BasicPath + xmlList[lvItem.Index]["emul"].InnerText + @"\\" + xmlList[lvItem.Index]["roms"].InnerText + @"\\" + xmlList[lvItem.Index]["file"].InnerText;
+            String FullRunPath = EmulatorRoot + xmlList[lvItem.Index]["emul"].InnerText + @"\\" + xmlList[lvItem.Index]["roms"].InnerText + @"\\" + xmlList[lvItem.Index]["file"].InnerText;
             //MessageBox.Show(FullRunPath);
 
-            String FileNameOnly = xmlList[lvItem.Index]["file"].InnerText.Replace(".zip","");
+            String FileNameOnly = xmlList[lvItem.Index]["file"].InnerText.Replace(".zip", "");
 
-            String runcmd = AssetsFolderName + @"run_arcade.bat " + DriveName + 
-                @" " + BasicPath + xmlList[lvItem.Index]["emul"].InnerText + @"/ " + xmlList[lvItem.Index]["exec"].InnerText + 
-                @" " + FileNameOnly;
+
+            String runcmd = String.Format(
+                "{0}run_arcade.bat {1} {2}{3}\\\\ {4} {5} {6}",
+                AssetsFolderName,
+                DriveName,
+                EmulatorRoot,
+                xmlList[lvItem.Index]["emul"].InnerText,
+                xmlList[lvItem.Index]["exec"].InnerText,
+                FileNameOnly,
+                xmlList[lvItem.Index]["option"].InnerText
+                );
 
             //MessageBox.Show(runcmd);
             Console.WriteLine(runcmd);
@@ -119,7 +149,12 @@ namespace ImageGalleryListView
             pro.Close();
 
             //MessageBox.Show(resultValue);
-            //Console.WriteLine(resultValue);
+            Console.WriteLine(resultValue);
+        }
+
+        private void listViewFile_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            GameRun(sender);
 
         }
 
