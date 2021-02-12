@@ -184,3 +184,4 @@ ShortCutSheet=shortcut.png
 제가 사용하던 XML은 그대로 남겨 두었습니다.
 
  
+=ㅅ=;
